@@ -2,7 +2,8 @@
 
 class Computer_Architecture:
     def __init__(self):
-        pass
+        self.cache = {}
+        self.cache_size = 4
     
     def calculate_max_binary_value(self, n):
         return 2**n - 1
@@ -132,6 +133,45 @@ class Computer_Architecture:
                 return "Invalid instruction"
         else:
             return "Invalid architecture type"
+        
+    def high_level_to_machine_code(self, instruction):
+        instruction_to_binary = {
+            "ADD": "100000",  
+            "SUB": "100010",  
+            "MULT": "011000", 
+        }
+
+        register_to_binary = {
+            "$0": "00000",
+            "$1": "00001",
+            "$2": "00010",
+            "$3": "00011",
+        }
+
+        parts = instruction.split()
+        opcode = parts[0]
+        registers = parts[1:]
+
+        binary_opcode = instruction_to_binary.get(opcode, "Unknown")
+
+        binary_registers = [register_to_binary.get(reg, "Unknown") for reg in registers]
+
+        machine_code = binary_opcode + ''.join(binary_registers)
+
+        return machine_code
+    
+    def access_cache(self, address, data=None):
+        if address in self.cache:
+            if data != None:
+                self.cache[address] = data
+            return self.cache[address]
+        else:
+            if data != None:
+                if len(self.cache) >= self.cache_size:
+                    self.cache.pop(next(iter(self.cache)))
+                self.cache[address] = data
+            return data
+        
 
 My_computer = Computer_Architecture()
 print(My_computer.multiply_binary_numbers("100", "111"))
