@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 
+from unittest import result
+
+
 class Computer_Architecture:
     def __init__(self):
         self.cache = {}
@@ -171,7 +174,13 @@ class Computer_Architecture:
                     self.cache.pop(next(iter(self.cache)))
                 self.cache[address] = data
             return data
+    
+    def simd_vector_addition(self, vector1, vector2):
+        if len(vector1) != len(vector2):
+            raise ValueError("Vectors have the same length")
+        result_vector = [a + b for a, b in zip(vector1, vector2)]
         
+        return result_vector
 
 My_computer = Computer_Architecture()
 print(My_computer.multiply_binary_numbers("100", "111"))
